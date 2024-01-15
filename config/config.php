@@ -1,20 +1,16 @@
 <?php
 
-// Host
+// Database configuration
 $host = 'localhost';
-
-//dbname
 $dbname = 'bookstore';
-
-//username
 $user = 'root';
-
-//password
 $pass = '';
 
-$conn = new PDO("mysql:host=$host;dbname=$dbname",$user,$pass);
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-if($conn) {
-    echo "Sdfv";
+// Establish a database connection
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected successfully";
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
 }
