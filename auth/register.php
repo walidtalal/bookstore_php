@@ -3,6 +3,10 @@
 <?php include "../config/config.php"?>
 
 <?php
+if(isset($_SESSION['username'])) {
+    header("location: ".APPURL."");
+}
+
 if(isset($_POST['submit'])) {
     if(empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
         echo "<script>alert('one or more input is empty')</script>";

@@ -4,6 +4,10 @@
 
 <?php
 
+if(isset($_SESSION['username'])) {
+    header("location: ".APPURL."");
+}
+
 if(isset($_POST['submit'])) {
     if(empty($_POST['email']) || empty($_POST['password'])) {
         echo "<script>alert('one or more input is empty')</script>";
@@ -19,7 +23,9 @@ if(isset($_POST['submit'])) {
 
         if($login->rowCount() > 0) {
             if(password_verify($password, $fetch['password'])) {
-                echo "login";
+                $_SESSION['username'] = $fetch['username'];
+                $_SESSION['user_id'] = $fetch['id'];
+                header("location: ".APPURL."");
             } else {
                 echo "<script>alert('Password or email is invalid')</script>";
             }
