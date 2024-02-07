@@ -37,6 +37,11 @@ if(isset($_POST['submit'])) {
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 
+//    Checking for product in cart
+    $select = $conn->query("SELECT * FROM cart WHERE pro_id = '$id' AND user_id='$_SESSION[user_id]'");
+    $select->execute();
+
+//    Getting data of every product
     $row = $conn->prepare('select * from products where status = 1 and id = ?');
     $row->execute([$id]);
 
@@ -87,7 +92,14 @@ if(isset($_GET['id'])) {
                                     <div class="">
                                         <input type="text" name="user_id" value="<?php echo $_SESSION['user_id'];?>" class="form-control">
                                     </div>
-                                <div class="cart mt-4 align-items-center"> <button name="submit" type="submit" class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button> </div>
+                                <div class="cart mt-4 align-items-center">
+                                    <?php if($select->rowCount() > 0) :?>
+                                    <button name="submit" type="submit" disabled class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Added to cart</button>
+                                    <?php else:?>
+                                        <button name="submit" type="submit" class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button>
+                                    <?php endif;?>
+
+                                </div>
                                 </form>
                             </div>
                         </div>
@@ -98,24 +110,33 @@ if(isset($_GET['id'])) {
 <?php include "../includes/footer.php"?>
 <script>
     $(document).ready(function () {
-        $("#form-data").on("submit", function (e) {
-            e.preventDefault();
 
-            var formdata = $(this).serialize() + '&submit=submit';
+        $(document).on("submit", function(e) {
+
+            e.preventDefault();
+            var formdata = $("#form-data").serialize()+'&submit=submit';
 
             $.ajax({
                 type: "post",
                 url: "single.php?id=<?php echo $id; ?>",
                 data: formdata,
 
-                success: function () {
-                    alert('Added to cart successfully');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while adding to cart');
+                success: function() {
+                    alert("added to cart successfully");
+                    $("#submit").html("<i class='fas fa-shopping-cart'></i> Added to cart").prop("disabled", true);
+                    ref();
                 }
             });
+
+            function ref() {
+
+
+                $("body").load("single.php?id=<?php echo $id; ?>");
+
+            }
+
         });
+
+
     });
 </script>
