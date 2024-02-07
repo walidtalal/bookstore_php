@@ -2,6 +2,16 @@
 <?php
 session_start();
 define("APPURL",'http://localhost/bookstore');
+
+//require "../config/config.php";
+require dirname(dirname(__FILE__)) . "/config/config.php" ;
+if(isset($_SESSION['user_id'])) {
+
+$number = $conn->query("select COUNT(*) AS num_products from cart where user_id='$_SESSION[user_id]'");
+$number->execute();
+
+$getNumber = $number->fetch(PDO::FETCH_OBJ);
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,7 +51,7 @@ define("APPURL",'http://localhost/bookstore');
 
                 <?php if (isset($_SESSION['username'])) :?>
                 <li class="nav-item">
-                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>/shopping/cart.php"><i class="fas fa-shopping-cart"></i>(2)</a>
+                    <a class="nav-link active  text-white" aria-current="page" href="<?php echo APPURL?>/shopping/cart.php"><i class="fas fa-shopping-cart"></i>(<?php echo $getNumber->num_products;?>)</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
