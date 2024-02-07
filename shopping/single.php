@@ -7,6 +7,33 @@ if(!isset($_SESSION['username'])) {
     header("location: ".APPURL."");
 }
 
+if(isset($_POST['submit'])) {
+    $pro_id = $_POST['pro_id'];
+    $pro_name = $_POST['pro_name'];
+    $pro_image = $_POST['pro_image'];
+    $pro_price = $_POST['pro_price'];
+    $pro_amount = $_POST['pro_amount'];
+    $pro_file = $_POST['pro_file'];
+    $user_id = $_SESSION['user_id'];
+
+    $query = 'insert into cart 
+               (pro_id, pro_name, pro_image,pro_price, pro_amount, pro_file,user_id) 
+        values 
+               (:pro_id,:pro_name, :pro_image,:pro_price, :pro_amount,:pro_file,:user_id )';
+    $insert = $conn->prepare($query);
+
+    $insert->execute([
+            ':pro_id'=> $pro_id,
+            ':pro_name'=> $pro_name,
+            ':pro_image'=> $pro_image,
+            ':pro_price'=> $pro_price,
+            ':pro_amount'=> $pro_amount,
+            ':pro_file'=> $pro_file,
+            ':user_id'=> $user_id,
+    ]);
+
+}
+
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -14,6 +41,8 @@ if(isset($_GET['id'])) {
     $row->execute([$id]);
 
     $product = $row->fetch(PDO::FETCH_OBJ);
+} else {
+    echo "404;";
 }
 ?>
         <div class="row d-flex justify-content-center">
@@ -36,8 +65,30 @@ if(isset($_GET['id'])) {
                                     </div>
                                 </div>
                                 <p class="about"><?php echo $product->description?></p>
-                              
-                                <div class="cart mt-4 align-items-center"> <button class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button> </div>
+                                <form method="post" action="" id="form-data">
+                                    <div class="">
+                                        <input type="text" name="pro_id" value="<?php echo $product->id ;?>" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="pro_name" value="<?php echo $product->name ;?>" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="pro_image" value="<?php echo $product->image ;?>" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="pro_price" value="<?php echo $product->price ;?>" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="pro_amount" value="1" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="pro_file" value="<?php echo $product->file ;?>" class="form-control">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="user_id" value="<?php echo $_SESSION['user_id'];?>" class="form-control">
+                                    </div>
+                                <div class="cart mt-4 align-items-center"> <button name="submit" type="submit" class="btn btn-primary text-uppercase mr-2 px-4"><i class="fas fa-shopping-cart"></i> Add to cart</button> </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -45,3 +96,26 @@ if(isset($_GET['id'])) {
             </div>
         </div>
 <?php include "../includes/footer.php"?>
+<script>
+    $(document).ready(function () {
+        $("#form-data").on("submit", function (e) {
+            e.preventDefault();
+
+            var formdata = $(this).serialize() + '&submit=submit';
+
+            $.ajax({
+                type: "post",
+                url: "single.php?id=<?php echo $id; ?>",
+                data: formdata,
+
+                success: function () {
+                    alert('Added to cart successfully');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding to cart');
+                }
+            });
+        });
+    });
+</script>
