@@ -5,6 +5,7 @@ $host = 'localhost';
 $dbname = 'bookstore';
 $user = 'root';
 $pass = '';
+$secret_key = "sk_test_51OhHEaCXHJ4JBkisBYkZjGc94UHjzppB7YMopiCA23brRvIPMpxQQQvkdDWKR1ATvRL47FK1dRQecjG3qU6VtZ2500pduLOpLJ";
 
 // Establish a database connection
 try {
