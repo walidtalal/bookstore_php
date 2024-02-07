@@ -43,10 +43,11 @@ if(isset($_POST['submit'])) {
                         <th scope="col">Quantity</th>
                         <th scope="col">Total Price</th>
                           <th scope="col">Update</th>
-                          <th scope="col"><a href="#" class="btn btn-danger text-white">Clear</a></th>
+                          <th scope="col"><button class="delete-all btn btn-danger text-white">Clear</button></th>
                       </tr>
                     </thead>
                     <tbody>
+                    <?php if(count($allProducts) > 0):?>
                     <?php $i =0;?>
                     <?php foreach ($allProducts as $product):?>
                         <?php $i++;?>
@@ -67,6 +68,11 @@ if(isset($_POST['submit'])) {
                           <td><button value="<?php echo $product->id; ?>" class="btn btn-danger text-white btn-delete"><i class="fas fa-trash-alt"></i> </button></td>
                       </tr>
                       <?php endforeach;?>
+                    <?php else:?>
+                        <div class="alert alert-danger bg-danger text-white">
+                            there is no products in cart
+                        </div>
+                    <?php endif;?>
                     </tbody>
                   </table>
                   <a href="<?php echo APPURL;?>" class="btn btn-success text-white"><i class="fas fa-arrow-left"></i>  Continue Shopping</a>
@@ -141,46 +147,46 @@ if(isset($_POST['submit'])) {
             fetch();
         });
 
-        // $(".btn-delete").on('click', function(e) {
-        //
-        //     var id = $(this).val();
-        //
-        //
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "delete-item.php",
-        //         data: {
-        //             delete: "delete",
-        //             id: id
-        //
-        //         },
-        //
-        //         success: function() {
-        //             alert("product deleted successfully");
-        //             reload();
-        //         }
-        //     })
-        // });
+        $(".btn-delete").on('click', function(e) {
+
+            var id = $(this).val();
 
 
-        // $(".delete-all").on('click', function(e) {
-        //
-        //
-        //
-        //
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "delete-all-item.php",
-        //         data: {
-        //             delete: "delete",
-        //         },
-        //
-        //         success: function() {
-        //             alert("all products deleted successfully");
-        //             reload();
-        //         }
-        //     })
-        // });
+            $.ajax({
+                type: "POST",
+                url: "delete-item.php",
+                data: {
+                    delete: "delete",
+                    id: id
+
+                },
+
+                success: function() {
+                    alert("product deleted successfully");
+                    reload();
+                }
+            })
+        });
+
+
+        $(".delete-all").on('click', function(e) {
+
+
+
+
+            $.ajax({
+                type: "POST",
+                url: "delete-all-item.php",
+                data: {
+                    delete: "delete",
+                },
+
+                success: function() {
+                    alert("all products deleted successfully");
+                    reload();
+                }
+            })
+        });
 
 
 
@@ -212,11 +218,11 @@ if(isset($_POST['submit'])) {
 
 
 
-        // function reload() {
-        //
-        //
-        //     $("body").load("cart.php")
-        //
-        // }
+        function reload() {
+
+
+            $("body").load("cart.php")
+
+        }
     });
 </script>
