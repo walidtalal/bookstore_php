@@ -54,7 +54,8 @@ if (isset($_POST['submit'])) {
                                         <tr class="mb-4">
                                             <th scope="row"><?php echo $i; ?></th>
                                             <td><img width="100" height="100"
-                                                     src="../images/<?php echo $product->pro_image; ?>"
+                                                     src="<?php echo IMGURL; ?>/<?php echo $product->pro_image; ?>"
+
                                                      class="img-fluid rounded-3" alt="Cotton T-shirt">
                                             </td>
                                             <td><?php echo $product->pro_name; ?></td>

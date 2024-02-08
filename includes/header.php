@@ -2,6 +2,7 @@
 <?php
 session_start();
 define("APPURL",'http://localhost/bookstore');
+define("IMGURL", "http://localhost/bookstore/admin-panel/products-admins/images");
 
 //require "../config/config.php";
 require dirname(dirname(__FILE__)) . "/config/config.php" ;
