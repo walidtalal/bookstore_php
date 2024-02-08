@@ -7,7 +7,47 @@
 if(!isset($_SESSION['username'])) {
     header("location: ".APPURL."");
 }
+
+
+
+if(isset($_POST['submit'])) {
+    if(empty($_POST['email']) OR empty($_POST['username']) OR empty($_POST['fname'])
+        OR empty($_POST['lname'])) {
+        echo "<script>alert('one or more inputs are empty');</script>";
+    } else {
+
+        $email = $_POST['email'];
+        $username = $_POST['username'];
+        $fname = $_POST['fname'];
+        $lname = $_POST['lname'];
+        $price = $_SESSION['price'];
+        $token = "asdfvbgbsdfv";
+        $user_id = $_SESSION['user_id'];
+
+        $insert = $conn->prepare("INSERT INTO orders (email, username, fname, lname, token, price, user_id)
+        VALUES(:email, :username, :fname, :lname, :token, :price, :user_id)");
+
+        $insert->execute([
+            ':email' => $email,
+            ':username' => $username,
+            ':fname' => $fname,
+            ':lname' => $lname,
+            ':token' => $token,
+            ':price' => $price,
+            ':user_id' => $user_id,
+        ]);
+
+//        header("location: ".APPURL."/download.php");
+        header("location: pay.php");
+
+
+    }
+
+}
+
+
 ?>
+
       <!-- Heading -->
       <h2 class="my-5 h2 text-center">Checkout</h2>
 <?php echo $_SESSION['price']?>
@@ -21,7 +61,7 @@ if(!isset($_SESSION['username'])) {
           <div class="card">
 
             <!--Card content-->
-            <form class="card-body">
+            <form class="card-body" method="post"  action="checkout.php">
 
               <!--Grid row-->
               <div class="row">
@@ -111,16 +151,16 @@ if(!isset($_SESSION['username'])) {
 
             
               <hr class="mb-4">
-<!--              <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">Continue to checkout</button>-->
-                <script
-                        src="https://checkout.stripe.com/checkout.js"
-                        class="stripe-button"
-                        data-key="pk_test_51OhHEaCXHJ4JBkis2P4QyeJCjDqOHC12Eyf1wDiQjCXR1TjsFqvdvJdjwdRd32ZebddkUv97Tru8u3eCx3CY7Dhm00zX7NO5pI"
-
-                        data-currency="usd"
-                        data-label="pay now"
-                >
-                </script>
+              <button class="btn btn-primary btn-lg btn-block" name="submit" type="submit">Continue to checkout</button>
+<!--                <script-->
+<!--                        src="https://checkout.stripe.com/checkout.js"-->
+<!--                        class="stripe-button"-->
+<!--                        data-key="pk_test_51OhHEaCXHJ4JBkis2P4QyeJCjDqOHC12Eyf1wDiQjCXR1TjsFqvdvJdjwdRd32ZebddkUv97Tru8u3eCx3CY7Dhm00zX7NO5pI"-->
+<!---->
+<!--                        data-currency="usd"-->
+<!--                        data-label="pay now"-->
+<!--                >-->
+<!--                </script>-->
             </form>
 
           </div>
