@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD']=='GET' && realpath(__FILE__) == realpath( $_SERVER
     */
     header( 'HTTP/1.0 403 Forbidden', TRUE, 403 );
 
-    /* choose the appropriate page to redirect users */
+            /* choose the appropriate page to redirect users */
     die( header( 'location: '.APPURL.'' ));
 
 }

@@ -210,11 +210,11 @@ if (isset($_POST['submit'])) {
                 $(".full_price").html(sum + "$");
                 $(".inp_price").val(sum);
 
-                // if($(".inp_price").val() > 0) {
-                //     $(".checkout").show();
-                // } else {
-                //     $(".checkout").hide();
-                // }
+                if($(".inp_price").val() > 0) {
+                    $(".checkout").show();
+                } else {
+                    $(".checkout").hide();
+                }
 
 
             }, 4000);

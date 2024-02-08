@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
 
     $product = $row->fetch(PDO::FETCH_OBJ);
 } else {
-    echo "404;";
+    header("location: ".APPURL."/404.php");
 }
 ?>
 <div class="row d-flex justify-content-center">
